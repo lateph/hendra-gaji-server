@@ -1,0 +1,22 @@
+// Initializes the `karyawan` service on path `/karyawan`
+const createService = require('feathers-mongoose');
+const createModel = require('../../models/karyawan.model');
+const hooks = require('./karyawan.hooks');
+
+module.exports = function (app) {
+  const Model = createModel(app);
+  const paginate = app.get('paginate');
+
+  const options = {
+    Model,
+    paginate
+  };
+
+  // Initialize our service with any options it requires
+  app.use('/karyawan', createService(options));
+
+  // Get our initialized service so that we can register hooks
+  const service = app.service('karyawan');
+
+  service.hooks(hooks);
+};
